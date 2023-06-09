@@ -1,5 +1,5 @@
 import os, sys
-from tkinter import Tk, Frame, Scale, Label, Button, Listbox, Scrollbar, PhotoImage
+from tkinter import Tk, Frame, Scale, Label, Button, Listbox, Scrollbar
 from tkinter import filedialog, messagebox
 from pygame import mixer
 
@@ -49,6 +49,7 @@ class MusicPlayer:
         
         # Checks for the command line input
         if len(sys.argv) > 1:
+            print("argument", sys.argv)
             self.play_song()
             self.add_songs_from_command_line()
 
@@ -99,16 +100,12 @@ class MusicPlayer:
     def add_songs_from_command_line(self):
         song_paths = sys.argv[1:]
         for song_path in song_paths:
-            print("input from command line", self.playlist, self.playlist_box)
-            self.add_song_to_playlist(song_path)
-
+            self.add_song_to_playlist(song_path.replace("\\","/"))
 
     def add_song_to_playlist(self, song_path):
         song_name = os.path.basename(song_path)
         if song_name not in self.playlist:
             self.playlist_box.insert("end", "  " + song_name)
-            self.playlist.append(song_path)
-            print("adding to playlist", self.playlist,"\n", self.playlist_box)
         else:
             messagebox.showinfo("Error", "Song already exists in the playlist!")
 
@@ -117,7 +114,6 @@ class MusicPlayer:
         song_paths = filedialog.askopenfilenames(initialdir="D:/media/music/", title="Select Song", filetypes=(("Audio files", "*.mp3"),))
         for song_path in song_paths:
             if song_path not in self.playlist:
-                print("Added direct", self.playlist, self.playlist_box)
                 self.add_song_to_playlist(song_path)
             else:
                 messagebox.showinfo("Error", "Song already exists in the playlist!")
