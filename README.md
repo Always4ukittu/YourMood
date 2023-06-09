@@ -12,4 +12,4 @@ You can download the application present in the "dist" folder.
   4. Play the song
   5. pause the song
   6. stop the song
-  7. play next an previous song
+  7. play next and previous song int the playlist
