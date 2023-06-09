@@ -2,7 +2,7 @@
 A Windows Music Player application using python tKinter framework.
 *It supports only ".mp3" formate.*
 #
-TO run the code type in  the terminal in the same directory in which the file is present *python <filename>*
+*To run the code type in the terminal opened in the same directory in which the file is present *python <filename>*
 You can download the application present in the "dist" folder.
   
 # Features
