@@ -106,6 +106,7 @@ class MusicPlayer:
         song_name = os.path.basename(song_path)
         if song_name not in self.playlist:
             self.playlist_box.insert("end", "  " + song_name)
+            self.playlist.append(song_path)
         else:
             messagebox.showinfo("Error", "Song already exists in the playlist!")
 
