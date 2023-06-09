@@ -6,10 +6,10 @@ TO run the code type in  the terminal in the same directory in which the file is
 You can download the application present in the "dist" folder.
   
 # Features
-   Add the song in the playlist
-   Delete the song form the playlist
-   Control Volume
-   Play the song
-   pause the song
-   stop the song
-   play next an previous song
+  1. Add the song in the playlist
+  2. Delete the song form the playlist
+  3. Control Volume
+  4. Play the song
+  5. pause the song
+  6. stop the song
+  7. play next an previous song
