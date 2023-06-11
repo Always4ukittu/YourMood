@@ -126,6 +126,8 @@ class MusicPlayer:
             if selected_song:
                 self.playlist_box.delete(selected_song)
                 self.playlist.pop(selected_song[0])
+                if selected_song[0] == self.current_song_index:
+                    mixer.music.stop()
             else:
                 messagebox.showinfo("Error", "No song selected!")
 
