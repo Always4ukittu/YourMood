@@ -1,9 +1,18 @@
 # YourMood
+#### Video Demo: <>
+#### Description:
 A Windows Music Player application using python tKinter framework.
 *It supports only ".mp3" formate.*
-#
-*To run the code type in the terminal opened in the same directory in which the file is present *python <filename>*
-You can download the application present in the "dist" folder.
+
+### How to run
+Type *python <filename> (optional) <"music.path1 music.path2 ....">* in the terminal opened in the same directory in which the file is present. 
+You can download the .exe application present in the "dist" folder.
+  
+### Keyboard conrols
+  1. "Up" or "Down" arrow -> control the volume
+  2. "Right" or "Left" -> plays next and previous song
+  3. "Space" -> play/pause song
+  4. "Escape" -> Stop the song
   
 # Features
   1. Add the song in the playlist
