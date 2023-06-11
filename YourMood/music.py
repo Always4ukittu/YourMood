@@ -8,7 +8,8 @@ class MusicPlayer:
     def __init__(self, root):
         self.root = root
         self.root.title("YourMood")
-        self.root.geometry("600x400")
+        self.root.geometry("500x400")
+        self.root.resizable(False, False)
 
         # Set the icon
         icon_path = "music.ico"
@@ -16,7 +17,7 @@ class MusicPlayer:
             self.root.iconbitmap(icon_path)
 
         # Initialize Pygame mixer
-        mixer.init()
+        mixer.init()  
 
         # Variables
         self.playlist = []
@@ -49,7 +50,6 @@ class MusicPlayer:
         
         # Checks for the command line input
         if len(sys.argv) > 1:
-            print("argument", sys.argv)
             self.play_song()
             self.add_songs_from_command_line()
 
@@ -84,7 +84,6 @@ class MusicPlayer:
 
         self.pause_button = Button(self.buttons_frame, text="⏸️", command=self.pause_song)
         self.pause_button.grid(row=0, column=4)
-        # ⏸️⏯️
         
         self.stop_button = Button(self.buttons_frame, text="⏹", command=self.stop_song)
         self.stop_button.grid(row=0, column=6)
@@ -93,14 +92,12 @@ class MusicPlayer:
             self.root, from_=0, to=100, orient="horizontal",
             label="🔊", command=self.set_volume,
         )
-        # 🔈🔉
-        self.volume_scale.set(self.volume)
         self.volume_scale.pack(pady=(0,0))
 
     def add_songs_from_command_line(self):
         song_paths = sys.argv[1:]
         for song_path in song_paths:
-            self.add_song_to_playlist(song_path.replace("\\","/"))
+            self.add_song_to_playlist(song_path.replace("\\","/")) # filedialog and add song have differet path formate.
 
     def add_song_to_playlist(self, song_path):
         song_name = os.path.basename(song_path)
@@ -112,13 +109,12 @@ class MusicPlayer:
 
     # Add multiple song in the playlist
     def add_song(self):
-        song_paths = filedialog.askopenfilenames(initialdir="D:/media/music/", title="Select Song", filetypes=(("Audio files", "*.mp3"),))
+        song_paths = filedialog.askopenfilenames(initialdir="C:\Users\Public\Music", title="Select Song", filetypes=(("Audio files", "*.mp3"),))
         for song_path in song_paths:
             if song_path not in self.playlist:
                 self.add_song_to_playlist(song_path)
             else:
-                messagebox.showinfo("Error", "Song already exists in the playlist!")
-
+                messagebox.showinfo("Error", "Song already exists in the playlist!")            
     
 
     # Remove the songs in the playlist
@@ -127,7 +123,6 @@ class MusicPlayer:
             messagebox.showinfo("Error", "Empty playlist!")
         else:
             selected_song = self.playlist_box.curselection()
-            print(selected_song)
             if selected_song:
                 self.playlist_box.delete(selected_song)
                 self.playlist.pop(selected_song[0])
@@ -179,7 +174,32 @@ class MusicPlayer:
         if (self.current_song_index > len(self.playlist) - 1):
             self.current_song_index = 0
             messagebox.showinfo("Error", "No next song!")
-        self.load_song(self.current_song_index)     
+        try:
+            self.load_song(self.current_song_index + 1)  
+        except IndexError:
+            messagebox.showinfo("Error", "No next song!")
+    
+    # keybord control
+    def handle_key(self, event):
+        if event.keysym == "Escape":
+            self.stop_song()
+        elif event.keysym == "Up" and self.volume < 100:
+            self.set_volume(self.volume + 1)
+        elif event.keysym == "Down" and self.volume > 0:
+            self.set_volume(self.volume - 1)
+        elif event.keysym == "Right":
+            self.next_song()
+        elif event.keysym == "Return":
+            self.play_song()
+        elif event.keysym == "Left":
+            self.previous_song()
+        elif event.keysym == "space":
+            if mixer.music.get_busy() == False:
+                self.play_song()
+            else:
+                self.pause_song()
+        else:
+            pass
 
     # Pause the song
     def pause_song(self):
@@ -192,6 +212,7 @@ class MusicPlayer:
     def set_volume(self, value):
         self.volume = int(value)
         mixer.music.set_volume(self.volume / 100)
+        self.volume_scale.set(self.volume)
     
     # Stops the song
     def stop_song(self):
@@ -202,6 +223,9 @@ root = Tk()
 
 # Create the MusicPlayer object
 music_player = MusicPlayer(root)
+    
+# Bind the key event to the player
+root.bind("<Key>", music_player.handle_key)
 
 # Run the Tkinter event loop
 root.mainloop()
